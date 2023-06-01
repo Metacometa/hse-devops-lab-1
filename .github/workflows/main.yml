@@ -6,12 +6,11 @@ on:
   
 jobs:
   build_os_matrix:
-    name: Building of matrix
+    name: Build of matrix
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ubuntu-latest
-    
+    runs-on: ${{ matrix.os }}
     env:
       app_name: main.exe
       
@@ -28,8 +27,10 @@ jobs:
          path: main_${{matrix.os}}.exe
          retention-days: 4      
          
-
-          
+  send_to_telegram:
+    name: Send to telegram
+    runs-on: ubuntu-latest
+    steps:
       - name: Telegram Notify
         uses: appleboy/telegram-action@master
         with:
