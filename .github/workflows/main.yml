@@ -28,9 +28,14 @@ jobs:
          retention-days: 4      
          
   send_to_telegram:
+    needs: build_os_matrix
     name: Send to telegram
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/download-artifact@v3
+        with: 
+          name: main_${{matrix.os}}.exe
+    
       - name: Telegram Notify
         uses: appleboy/telegram-action@master
         with:
