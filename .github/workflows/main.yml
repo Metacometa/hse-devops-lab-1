@@ -20,7 +20,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         with:
          name: main_matrix
-         path: main_windows_latest.exe
+         path: main_windows-latest.exe
          retention-days: 4    
          
   build_linux_and_macos:
