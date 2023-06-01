@@ -33,5 +33,5 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: ${{ env.app_name_${{matrix.os}}.exe }}
+          document: ${{ env.app_name }}_${{ matrix.os }}.exe
          
