@@ -9,7 +9,7 @@ jobs:
     name: Building of matrix
     strategy:
       matrix:
-        os: [ubuntu-latest, macos_latest, windows,latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: matrix.os
     
     env:
