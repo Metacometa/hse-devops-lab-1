@@ -5,28 +5,33 @@ on:
       branches: [ "main" ]
   
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build_os_matrix:
+    name: Building of matrix
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos_latest, windows,latest]
+    runs-on: matrix.os
+    
     env:
-      app_name: test.exe
+      app_name: main.exe
+      
     steps:
       - uses: actions/checkout@v3
-      - name: build 
+      - name: Bulding of app 
         run: 
-          g++ -o test.exe main.cpp
+          g++ main.cpp -o main_${{matrix.os}}.exe
     
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
          name: main_artifact
-         path: test.exe
-
-         retention-days: 4
+         path: main_${{matrix.os}}.exe
+         retention-days: 4      
          
       - name: Telegram Notify
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: ${{ env.app_name }}
+          document: ${{ env.app_name_${{matrix.os}}.exe }}
          
