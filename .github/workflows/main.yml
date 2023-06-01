@@ -6,12 +6,13 @@ on:
   
 jobs:
   build_windows:
+      name: Build for windows
       runs-on: windows-latest
       
       steps:
       - uses: ilammy/msvc-dev-cmd@v1.4.1
       - uses: actions/checkout@v3
-      - name: Build for windows
+      - name: Cl building
         run: 
           cl main.cpp /Fe:main_windows-latest /std:c++latest
     
@@ -23,7 +24,7 @@ jobs:
          retention-days: 4    
          
   build_linux_and_macos:
-    name: Build linux and macos
+    name: Build for linux and macos
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -45,7 +46,7 @@ jobs:
          retention-days: 4      
          
   send_to_telegram:
-    needs: build_linux_and_macos
+    needs: [build_linux_and_macos, build_windows]
     name: Send to telegram
     runs-on: ubuntu-latest
     steps:
