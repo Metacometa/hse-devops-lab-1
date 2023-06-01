@@ -9,7 +9,7 @@ jobs:
     name: Build of matrix
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-2019]
     runs-on: ${{ matrix.os }}
     env:
       app_name: main
