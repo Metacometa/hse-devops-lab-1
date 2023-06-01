@@ -23,7 +23,7 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-         name: main_${{matrix.os}}.exe
+         name: main_matrix
          path: main_${{matrix.os}}.exe
          retention-days: 4      
          
