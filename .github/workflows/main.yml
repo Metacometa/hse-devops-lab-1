@@ -18,13 +18,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Bulding of app 
         run: 
-          g++  main.cpp -o main_${{ matrix.os }}.exe
+          g++  main.cpp -o main_${{ matrix.os }}.o
     
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
          name: main_matrix
-         path: main_${{matrix.os}}.exe
+         path: main_${{matrix.os}}.o
          retention-days: 4      
          
   send_to_telegram:
@@ -41,5 +41,5 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: main_*.exe
+          document: main_*.o
          
