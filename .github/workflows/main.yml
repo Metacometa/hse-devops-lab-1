@@ -1,16 +1,16 @@
 name: MyYml
 
 on: 
-  push:
-    branches: [ "main" ]
+   push:
+      branches: [ "main" ]
   
 jobs:
   build:
     runs-on: linux-latest
     
     steps:
-     - uses: actions/checkout@v1
-     - name: build
-      run: 
-        g++ -o test.exe main.cpp
+      - uses: actions/checkout@v1
+      - name: build 
+        run: 
+          g++ -o test.exe main.cpp
     
