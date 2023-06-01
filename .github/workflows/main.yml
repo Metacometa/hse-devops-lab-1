@@ -7,7 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+    env:
+      app_name: test.exe
     steps:
       - uses: actions/checkout@v3
       - name: build 
@@ -21,3 +22,11 @@ jobs:
          path: test.exe
 
          retention-days: 4
+         
+      - name: Telegram Notify
+        uses: appleboy/telegram-action@0.0.3
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: ${{ env.app_name }}
+         
