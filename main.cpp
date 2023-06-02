@@ -169,6 +169,7 @@ public:
 
 int main()
 {
+    std::cout << "Hello devops" << std::endl;
     srand(time(0));
 
     Solution solution;
