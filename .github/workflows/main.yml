@@ -46,7 +46,7 @@ jobs:
          retention-days: 4      
             
   send_to_telegram:
-    needs: cpplint
+    needs: [build_windows, build_linux_and_macos]
     name: Send to telegram
     runs-on: ubuntu-latest
     steps:
