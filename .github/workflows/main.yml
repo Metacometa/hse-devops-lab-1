@@ -5,12 +5,72 @@ on:
       branches: [ "main" ]
   
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v1
-      - name: build 
+  build_windows:
+      name: Build for windows
+      runs-on: windows-latest
+      
+      steps:
+      - uses: ilammy/msvc-dev-cmd@v1.4.1
+      - uses: actions/checkout@v3
+      - name: Cl building
         run: 
-          g++ -o test.exe main.cpp
+          cl main.cpp /Fe:main_windows-latest /std:c++latest
     
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         name: main_matrix
+         path: main_windows-latest.exe
+         retention-days: 4    
+         
+  build_linux_and_macos:
+    name: Build for linux and macos
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      app_name: main
+      
+    steps:
+      - uses: actions/checkout@v3
+      - name: Bulding of app 
+        run: 
+          g++  main.cpp -o main_${{ matrix.os }}.exe
+    
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         name: main_matrix
+         path: main_${{matrix.os}}.exe
+         retention-days: 4      
+         
+  cpplint:
+      needs: [build_linux_and_macos, build_windows]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Setup Infer
+          uses: srz-zumix/setup-infer@v1
+        - name: Infer
+          run: |
+            infer -- make
+        - name: Check Infer report
+          uses: srz-zumix/reviewdog-action-infer@v1
+          with:
+            reporter: github-pr-review # Default is github-pr-check
+            
+  send_to_telegram:
+    needs: cpplint
+    name: Send to telegram
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with: 
+          name: main_matrix
+    
+      - name: Telegram Notify
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: main_*.exe
