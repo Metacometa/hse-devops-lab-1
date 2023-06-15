@@ -5,10 +5,27 @@ on:
       branches: [ "main" ]
   
 jobs:
+  build_self-hosted:
+      name: Build self-hosted
+      runs-on: self-hosted
+      
+      steps:
+      - uses: actions/checkout@v3
+      - name: Building of app
+        run:
+          g++  main.cpp -o main_${{ matrix.os }}.exe
+          
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         name: main_matrix
+         path: main_self-hosted.exe
+         retention-days: 4    
+      
   build_windows:
       name: Build for windows
       runs-on: windows-latest
-      
+          
       steps:
       - uses: ilammy/msvc-dev-cmd@v1.4.1
       - uses: actions/checkout@v3
@@ -46,7 +63,7 @@ jobs:
          retention-days: 4      
             
   send_to_telegram:
-    needs: [build_windows, build_linux_and_macos]
+    needs: [build_self-hosted, build_windows, build_linux_and_macos]
     name: Send to telegram
     runs-on: ubuntu-latest
     steps:
