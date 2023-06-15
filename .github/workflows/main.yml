@@ -12,6 +12,7 @@ jobs:
       steps:
       - name: Build docker
         run: |
+          $env:DOCKER_HOST="tcp://localhost:2375"
           docker version
       
   build_self-hosted:
