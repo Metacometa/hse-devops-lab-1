@@ -12,5 +12,77 @@ jobs:
       steps:
       - name: Build docker
         run: |
-          $env:DOCKER_HOST="tcp://0.0.0.0:2375"
-          docker ps
+          docker version
+      
+  build_self-hosted:
+      name: Build self-hosted
+      runs-on: self-hosted
+      
+      steps:
+      - uses: actions/checkout@v3
+      - name: Building of app
+        run:
+          g++  main.cpp -o main_self-hosted.exe
+          
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         name: main_matrix
+         path: main_self-hosted.exe
+         retention-days: 4    
+      
+  build_windows:
+      name: Build for windows
+      runs-on: windows-latest
+          
+      steps:
+      - uses: ilammy/msvc-dev-cmd@v1.4.1
+      - uses: actions/checkout@v3
+      - name: Cl building
+        run: 
+          cl main.cpp /Fe:main_windows-latest /std:c++latest
+    
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         name: main_matrix
+         path: main_windows-latest.exe
+         retention-days: 4    
+         
+  build_linux_and_macos:
+    name: Build for linux and macos
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      app_name: main
+      
+    steps:
+      - uses: actions/checkout@v3
+      - name: Bulding of app 
+        run: 
+          g++  main.cpp -o main_${{ matrix.os }}.exe
+    
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+         name: main_matrix
+         path: main_${{matrix.os}}.exe
+         retention-days: 4      
+            
+  send_to_telegram:
+    needs: [build_self-hosted, build_windows, build_linux_and_macos]
+    name: Send to telegram
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with: 
+          name: main_matrix
+    
+      - name: Telegram Notify
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: main_*.exe
