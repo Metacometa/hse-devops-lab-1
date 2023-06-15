@@ -13,12 +13,11 @@ jobs:
       - name: Build docker
         run: |
           $env:DOCKER_HOST="tcp://localhost:2375"
-          docker build . -t app
-          docker run app
+          docker build . -t app:latest
+          docker run app:latest
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker save --output app.tar app
-          docker load --input app
-          docker push kiranchy/hse-devops-lab-1-2
+          docker tag app:latest kiranchy/hse-devops-lab-1-2:latest
+          docker push kiranchy/hse-devops-lab-1-2:latest
       
   build_self-hosted:
       name: Build self-hosted
