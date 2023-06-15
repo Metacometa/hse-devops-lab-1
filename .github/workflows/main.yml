@@ -16,7 +16,7 @@ jobs:
           docker build . -t app
           docker run app
           docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker load < result
+          docker load < app
           docker push kiranchy/hse-devops-lab-1-2
       
   build_self-hosted:
