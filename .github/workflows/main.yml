@@ -14,7 +14,7 @@ jobs:
         run: |
           $env:DOCKER_HOST="tcp://localhost:2375"
           docker build . -t app
-          docker login -u kiranchy
+          echo "tishcatishca555" | docker login -u Kiranchy --password-stdin
           docker tag app kiranchy/hse-devops-lab-1-2
           docker push kiranchy/hse-devops-lab-1-2
           docker run app
