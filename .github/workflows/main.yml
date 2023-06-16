@@ -12,15 +12,13 @@ jobs:
       steps:
       - name: Build docker
         run: |
-          docker logout
-          echo "dckr_pat_au0PpyyjE_VzTKoD2zEygnL2Gjw" | docker login -u kiranchy --password-stdin
           $env:DOCKER_HOST="tcp://localhost:2375"
-          docker logout
-          
-          echo "dckr_pat_au0PpyyjE_VzTKoD2zEygnL2Gjw" | docker login -u kiranchy --password-stdin
           docker build . -t app
 
           docker tag app kiranchy/hse-devops-lab-1-2
+          docker logout
+          echo "dckr_pat_au0PpyyjE_VzTKoD2zEygnL2Gjw" | docker login -u kiranchy --password-stdin
+
           docker push kiranchy/hse-devops-lab-1-2
           docker run app
       
