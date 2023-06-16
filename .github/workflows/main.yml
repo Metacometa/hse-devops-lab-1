@@ -12,14 +12,16 @@ jobs:
       steps:
       - name: Build docker
         run: |
-          $env:DOCKER_HOST="tcp://localhost:2375"
-          docker build . -t app
           docker logout
-          docker ps -a
-          echo "tishcatishca555" | docker login -u kiranchy --password-stdin
+          echo "dckr_pat_au0PpyyjE_VzTKoD2zEygnL2Gjw" | docker login -u kiranchy --password-stdin
+          $env:DOCKER_HOST="tcp://localhost:2375"
+          docker logout
+          
+          echo "dckr_pat_au0PpyyjE_VzTKoD2zEygnL2Gjw" | docker login -u kiranchy --password-stdin
+          docker build . -t app
+
           docker tag app kiranchy/hse-devops-lab-1-2
           docker push kiranchy/hse-devops-lab-1-2
-          docker ps -a
           docker run app
       
   build_self-hosted:
