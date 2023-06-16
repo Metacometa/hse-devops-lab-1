@@ -35,7 +35,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: kiranchy/hse-devops-lab-1-2:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/hse-devops-lab-1-2:latest
       
   build_windows:
       name: Build for windows
