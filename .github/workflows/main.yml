@@ -35,23 +35,6 @@ jobs:
           context: .
           push: true
           tags: kiranchy/hse-devops-lab-1-2:latest
-            
-  build_self-hosted:
-      name: Build self-hosted
-      runs-on: self-hosted
-      
-      steps:
-      - uses: actions/checkout@v3
-      - name: Building of app
-        run:
-          g++  main.cpp -o main_self-hosted.exe
-          
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.2
-        with:
-         name: main_matrix
-         path: main_self-hosted.exe
-         retention-days: 4    
       
   build_windows:
       name: Build for windows
