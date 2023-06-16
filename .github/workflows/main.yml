@@ -27,7 +27,6 @@ jobs:
           image: kiranchy/hse-devops-lab-1-2
           tags: v1, latest
           registry: docker.io
-          dockerfile: Dockerfile.ci
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
             
