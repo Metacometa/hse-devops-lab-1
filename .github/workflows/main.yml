@@ -5,8 +5,6 @@ on:
       branches: [ "main" ]
   
 jobs:
-  build_
-
   build_docker_and_execute:
       name: Build and execute dockerfile
       runs-on: self-hosted
@@ -17,20 +15,21 @@ jobs:
           $env:DOCKER_HOST="tcp://localhost:2375"
           docker build . -t app
           docker run app
+            
   send_to_dockerhub:
+      name: Send to dockerhub
+      runs-on: ubuntu-latest
+      
       steps:
-        - uses: actions/checkout@v3
-         name: Check out code
-
-        - uses: mr-smithers-excellent/docker-build-push@v6
-          name: Build & push Docker image
-          with:
-            image: kiranchy/hse-devops-lab-1-2
-            tags: v1, latest
-            registry: docker.io
-            dockerfile: Dockerfile.ci
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image
+        with:
+          image: kiranchy/hse-devops-lab-1-2
+          tags: v1, latest
+          registry: docker.io
+          dockerfile: Dockerfile.ci
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
             
   build_self-hosted:
       name: Build self-hosted
