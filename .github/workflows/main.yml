@@ -2,7 +2,7 @@ name: MyYml
 
 on: 
    push:
-      branches: [ "main" ]
+      branches: [ "main" , "master]
   
 jobs:
   build_docker_and_execute:
